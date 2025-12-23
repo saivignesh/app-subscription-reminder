@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Sub</title>
+</head>
+<body>
+    <h2>Update {{sub.name}}</h2>
+    <form action="" method="post">
+        <label for="app" >App Name</label>
+        <input id="app" name="app" type="text" value="{{sub.name}}"/><br><br>
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" type="number" step="any" value="{{sub.amount}}"/><br><br>
+        <label for="type">Type</label>
+        <input id="type" name="type" type="text" value="{{sub.subtype}}"/><br><br>
+        <label for="subdate">Sub Date</label>
+        <input type="Date" name="subdate" id="subdate" value="{{sub.subdate}}"/><br><br>
+        <label for="expdate">Exp Date</label>
+        <input type="Date" name="expdate" id="expdate" value="{{sub.expdate}}" /><br><br>
+        <label for="subdays">Sub. Days</label>
+        <input type="number" name="subdays" id="subdays" value="{{sub.subdays}}"/><br><br>
+        <button type="submit">Submit</button>
+        <button type="link"><a href="{{url_for('index')}}">Go Back</a></button>
+    </form>    
+</body>
+</html>
