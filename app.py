@@ -1,10 +1,16 @@
+# Flask imports
 from flask import Flask, request, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail
+
+# Other imports
 from datetime import date, timedelta, datetime
+import config
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///apps.db" 
+app.config.from_object(config.Config)
 db = SQLAlchemy(app)
+mail = Mail(app)
 
 class Apps(db.Model):
     __tablename__ = "apps"
@@ -30,10 +36,7 @@ class Apps(db.Model):
 
     def __repr__(self):
         return f"{self.name},{self.subtype}"
-
-    """ def renew(self):
-        self.subdate = self.expdate
-        self.setexpdate() """
+    
         
 with app.app_context():
     db.create_all()
@@ -41,7 +44,7 @@ with app.app_context():
 @app.route('/',methods=['POST','GET'])
 def index():    
     if request.method == 'POST':
-        name = request.form["app"]
+        name = request.form["name"]
         amount = float(request.form["amount"])
         subtype = request.form["type"]
         subdate = datetime.strptime(request.form["subdate"],"%Y-%m-%d").date()
@@ -51,7 +54,6 @@ def index():
             expdate = datetime.strptime(request.form["expdate"],"%Y-%m-%d").date()            
         if subdays:
             subdays = int(subdays)
-
         sub = Apps(
             name=name,
             amount=amount,
@@ -60,14 +62,18 @@ def index():
             expdate=expdate,
             subdays=subdays,
             )
-        sub.setexpdate()
-        sub.setdays()
+        if not expdate:
+            sub.setexpdate()
+        if not subdays:
+            sub.setdays()        
         sub.setdaysleft()        
 
         db.session.add(sub)
         db.session.commit()        
 
-    subs = db.session.query(Apps).all()    
+    subs = db.session.query(Apps).all()
+    for sub in subs:
+        sub.setdaysleft()    
     return render_template('index.html',subs=subs)
 
 @app.route('/renew/<int:id>',methods=['POST','GET'])
@@ -90,9 +96,11 @@ def renew(id):
        sub.subdate = subdate
        sub.expdate = expdate
        sub.subdays = subdays
-       sub.setexpdate()
-       sub.setdays()
-       sub.setdaysleft()
+       if not expdate:            
+            sub.setexpdate()
+       if not subdays:
+            sub.setdays()        
+       sub.setdaysleft() 
 
        db.session.commit()
 
@@ -104,7 +112,7 @@ def renew(id):
 def update(id):
     sub = db.session.get(Apps,id)
     if request.method == 'POST':
-       name = request.form["app"]
+       name = request.form["name"]
        amount = float(request.form["amount"])
        subtype = request.form["type"]
        subdate = datetime.strptime(request.form["subdate"],"%Y-%m-%d").date()
@@ -121,9 +129,11 @@ def update(id):
        sub.subdate = subdate
        sub.expdate = expdate
        sub.subdays = subdays
-       sub.setexpdate()
-       sub.setdays()
-       sub.setdaysleft()
+       if not expdate:
+            sub.setexpdate()
+       if not subdays:
+            sub.setdays()        
+       sub.setdaysleft() 
 
        db.session.commit()
 
