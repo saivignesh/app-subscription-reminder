@@ -1,0 +1,18 @@
+# Celery Worker
+CELERYD_NODES="emailer"
+CELERY_BIN=/home/vignesh/.homeenv/bin/celery
+CELERY_APP="tasks"
+CELERYD_CHDIR="/home/vignesh/projects/app-subscription-reminder"
+CELERYD_OPTS="--concurrency=2"
+CELERYD_LOG_LEVEL="INFO"
+CELERYD_LOG_FILE="/var/log/celery/%n%I.log"
+CELERYD_PID_FILE="/var/run/celery/%n.pid"
+CELERYD_USER="vignesh"
+CELERYD_GROUP="vignesh"
+CELERY_CREATE_DIRS=1
+
+# Celery Beat 
+CELERYBEAT_CHDIR="/home/vignesh/projects/app-subscription-reminder"
+CELERYBEAT_OPTS="--schedule=/var/run/celery/celerybeat-schedule"
+CELERYBEAT_LOG_FILE="/var/log/celery/beat.log"
+CELERYBEAT_PID_FILE="/var/run/celery/beat.pid"

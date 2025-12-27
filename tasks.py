@@ -16,7 +16,6 @@ def setup_periodic_task(sender,**kwargs):
         send_notification.s(),
     )
 
-
 @celery_app.task()
 def send_notification():
     msg = Message(
@@ -24,7 +23,7 @@ def send_notification():
         recipients=["sai.s.vignesh@gmail.com"]
     )
     subs = db.session.query(Apps).all()
-    filterSubs = list(filter(lambda x: x.daysleft < 8,subs))
+    filterSubs = list(filter(lambda x: x.daysleft < 4,subs))
 
     if filterSubs:
         msg.html = render_template("email.html",subs=subs,filterSubs=filterSubs)

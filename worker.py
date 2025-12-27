@@ -1,6 +1,5 @@
 # Celery imports
 from celery import Celery,Task
-from celery.schedules import crontab
 
 def make_celery(app):
     class FlaskTask(Task):
