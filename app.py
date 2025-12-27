@@ -3,14 +3,21 @@ from flask import Flask, request, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 
-# Other imports
+# SQLAlchemy imports
+from sqlalchemy.ext.hybrid import hybrid_property
+
+# Standard imports
 from datetime import date, timedelta, datetime
+
+# Local imports
+from worker import make_celery
 import config
 
 app = Flask(__name__)
 app.config.from_object(config.Config)
 db = SQLAlchemy(app)
 mail = Mail(app)
+celery_app = make_celery(app)
 
 class Apps(db.Model):
     __tablename__ = "apps"
@@ -20,8 +27,7 @@ class Apps(db.Model):
     subtype = db.Column(db.String, nullable=False)
     subdate = db.Column(db.Date,nullable=False)
     expdate = db.Column(db.Date)
-    subdays = db.Column(db.Integer)
-    daysleft = db.Column(db.Integer)    
+    subdays = db.Column(db.Integer)    
 
     def setdays(self):
         if self.expdate:
@@ -31,8 +37,10 @@ class Apps(db.Model):
         if self.subdays:
             self.expdate = self.subdate + timedelta(self.subdays)
 
-    def setdaysleft(self):
-        self.daysleft = (self.expdate - date.today()).days
+    @hybrid_property
+    def daysleft(self):
+        return (self.expdate - date.today()).days
+
 
     def __repr__(self):
         return f"{self.name},{self.subtype}"
@@ -65,15 +73,12 @@ def index():
         if not expdate:
             sub.setexpdate()
         if not subdays:
-            sub.setdays()        
-        sub.setdaysleft()        
+            sub.setdays()                        
 
         db.session.add(sub)
         db.session.commit()        
 
-    subs = db.session.query(Apps).all()
-    for sub in subs:
-        sub.setdaysleft()    
+    subs = db.session.query(Apps).all()    
     return render_template('index.html',subs=subs)
 
 @app.route('/renew/<int:id>',methods=['POST','GET'])
@@ -99,8 +104,7 @@ def renew(id):
        if not expdate:            
             sub.setexpdate()
        if not subdays:
-            sub.setdays()        
-       sub.setdaysleft() 
+            sub.setdays()               
 
        db.session.commit()
 
@@ -132,8 +136,7 @@ def update(id):
        if not expdate:
             sub.setexpdate()
        if not subdays:
-            sub.setdays()        
-       sub.setdaysleft() 
+            sub.setdays()               
 
        db.session.commit()
 

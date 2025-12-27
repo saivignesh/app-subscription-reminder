@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/bootstrap-5.3.8-dist/css/bootstrap.css">
     <title>Renew</title>
 </head>
 <body>
-    <h2>Renew {{sub.name}}</h2>
-    <form action='' method="POST">
-        <label for="amount">Amount</label>
-        <input id="amount" name="amount" type="number" step="any" value="{{sub.amount}}"/><br><br>
-        <label for="type">Type</label>
-        <input id="type" name="type" type="text" value="{{sub.subtype}}"/><br><br>
-        <label for="subdate">Sub Date</label>
-        <input type="Date" name="subdate" id="subdate" value="{{sub.expdate}}"/><br><br>
-        <label for="expdate">Exp Date</label>
-        <input type="Date" name="expdate" id="expdate"  /><br><br>
-        <label for="subdays">Sub. Days</label>
-        <input type="number" name="subdays" id="subdays" value="{{sub.subdays}}"/><br><br>
-        <button type="submit">Submit</button>
-        <button type="link"><a href="{{url_for('index')}}">Go Back</a></button>
-    </form>       
+    <div class="p-5 container-md text-bg-dark col-lg-5">        
+        <h2 class="text-center">Renew {{sub.name}}</h2>
+        <form action='' method="POST">
+            <label class="form-label" for="amount">Amount</label>
+            <input class="form-control" id="amount" name="amount" type="number" step="any" value="{{sub.amount}}"/>
+            <label class="form-label" for="type">Type</label>
+            <input class="form-control" id="type" name="type" type="text" value="{{sub.subtype}}"/>
+            <div class="col-6">
+                <label class="form-label" for="subdate">Start Date</label>
+                <input class="form-control" type="Date" name="subdate" id="subdate" value="{{sub.expdate}}"/>
+                <label class="form-label" for="expdate">End Date</label>
+                <input class="form-control" type="Date" name="expdate" id="expdate" />
+            
+                <label class="form-label" for="subdays">Total No. of Days</label>
+                <input class="form-control" type="number" name="subdays" id="subdays" />
+            </div><br>
+            <button class="btn btn-success" type="submit">Submit</button>
+            <a class="btn btn-primary" href="{{url_for('index')}}">Go Back</a>
+            
+        </form>
+    </div>  
+    <script src="../static/bootstrap-5.3.8-dist/js/bootstrap.bundle.js"></script>     
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Notification</title>
+</head>
+<body>
+    <h3>Subscriptions No. of Days Left</h3>
+    <p>Less than a week left for the following subscriptions</p>
+    <table>
+        <thead >
+            <tr>
+                <th>Name</th>
+                <th>Days Left</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in filterSubs %}
+            <tr>
+                <td>{{sub.name}}</td>
+                <td>{{sub.daysleft}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>List of all subscriptions </h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Days Left</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in subs %}
+            <tr>
+                <td>{{sub.name}}</td>
+                <td>{{sub.daysleft}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

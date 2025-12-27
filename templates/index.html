@@ -2,65 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>App Subscriptions</title>
+    <link rel="stylesheet" href="../static/bootstrap-5.3.8-dist/css/bootstrap.css">
 </head>
 <body>
-    <h1>Apps Subscriptions</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>S. No.</th>
-                <th>Subscription</th>
-                <th>Amount(₹)</th>
-                <th>Type</th>
-                <th>Sub. Date</th>
-                <th>Exp. Date</th>
-                <th>No. of Days Left</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sub in subs %}
-            <tr>
-                <td>{{ loop.index }}</td>                
-                <td>{{ sub.name }}</td>
-                <td>{{ sub.amount}}</td>
-                <td>{{ sub.subtype}} </td>
-                <td>{{ sub.subdate.strftime("%d-%m-%Y")}}</td>
-                <td>{{ sub.expdate.strftime("%d-%m-%Y")}}</td>                
-                <td>{{ sub.daysleft}}</td>
-                <td colspan="3">
-                    <a href="{{url_for('renew',id=sub.id)}}">Renew</a>
-                    <a href="{{url_for('update',id=sub.id)}}">Update</a>
-                    <a href="{{url_for('delete',id=sub.id)}}">Delete</a>
-                </td>
-            </tr>            
-            {% endfor %}
-        </tbody>
-    </table>
-    <button onclick="showForm()">Add App</button>
-    <form  id="appForm" action="" method="POST" style="display: None;">
-        <label for="name" >App Name</label>
-        <input id="name" name="name" type="text"/><br><br>
-        <label for="amount">Amount</label>
-        <input id="amount" name="amount" type="number" step="any"/><br><br>
-        <label for="type">Type</label>
-        <input id="type" name="type" type="text"/><br><br>
-        <label for="subdate">Sub Date</label>
-        <input type="Date" name="subdate" id="subdate" /><br><br>
-        <label for="expdate">Exp Date</label>
-        <input type="Date" name="expdate" id="expdate" /><br><br>
-        <label for="subdays">Sub. Days</label>
-        <input type="number" name="subdays" id="subdays" /><br><br>
-        <button type="submit">Submit</button>        
-    </form>
+    <div class="container-md text-bg-dark p-5">        
+        <h1 class="mb-5 text-center">App Subscriptions</h1>
+        <div class="table-responsive-xl">
+            <table class="table table-dark table-hover table-striped table-bordered border-light" style="min-width: 1050px;">
+                <caption class="text-light"> List of subscriptions</caption>
+                <thead class="text-center table-light border-dark">
+                    <tr>
+                        <th>S. No.</th>
+                        <th>Subscription</th>
+                        <th>Amount(₹)</th>
+                        <th>Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>No. of Days Left</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for sub in subs %}
+                    <tr>
+                        <td>{{ loop.index }}</td>                
+                        <td>{{ sub.name }}</td>
+                        <td>{{ sub.amount}}</td>
+                        <td>{{ sub.subtype}} </td>
+                        <td class="text-center">{{ sub.subdate.strftime("%d-%m-%Y")}}</td>
+                        <td class="text-center">{{ sub.expdate.strftime("%d-%m-%Y")}}</td>                
+                        <td>{{ sub.daysleft}}</td>
+                        <td class="text-center" colspan="3">
+                            <a class="btn btn-success" href="{{url_for('renew',id=sub.id)}}">Renew</a>
+                            <a class="btn btn-primary" href="{{url_for('update',id=sub.id)}}">Update</a>
+                            <a class="btn btn-danger" href="{{url_for('delete',id=sub.id)}}">Delete</a>
+                        </td>
+                    </tr>            
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <button class="my-3 btn btn-primary" onclick="showForm()">Add App</button>
+        <div class="col-lg-5">
+            <form id="appForm" action="" method="POST" style="display: None;">
+            <label class="form-label" for="name" >App Name</label>
+            <input class="form-control" id="name" name="name" type="text"/>
+            <label class="form-label" for="amount">Amount</label>
+            <input class="form-control" id="amount" name="amount" type="number" step="any"/>
+            <label class="form-label" for="type">Type</label>
+            <input class="form-control" id="type" name="type" type="text"/>
+            <div class="col-5">
+                <label class="form-label" for="subdate">Start Date</label>
+                <input class="form-control" type="Date" name="subdate" id="subdate" />
+                <label class="form-label" for="expdate">End Date</label>
+                <input class="form-control" type="Date" name="expdate" id="expdate" />
+            
+                <label class="form-label" for="subdays">Total No. of Days</label>
+                <input class="form-control" type="number" name="subdays" id="subdays" />
+            </div><br>
+            <button class="btn btn-success"type="submit">Submit</button>        
+        </form>
+        </div>       
+    </div>
 
     <script>
         function showForm(){
             const appForm = document.getElementById("appForm");
-            appForm.style.display = "block";
+            if (appForm.style.display === "none"){
+                appForm.style.display = "block";
+            } else {
+                appForm.style.display = "none";
+            }
         }       
     </script>
+    <script src="../static/bootstrap-5.3.8-dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>

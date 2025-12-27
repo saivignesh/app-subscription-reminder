@@ -1,3 +1,5 @@
 __pycache__/
-update.sh
+push.sh
 .env
+celery_logs.info
+celerybeat-schedule
