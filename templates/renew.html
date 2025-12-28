@@ -11,12 +11,12 @@
         <h2 class="text-center">Renew {{sub.name}}</h2>
         <form action='' method="POST">
             <label class="form-label" for="amount">Amount</label>
-            <input class="form-control" id="amount" name="amount" type="number" step="any" value="{{sub.amount}}"/>
+            <input class="form-control" id="amount" name="amount" type="number" step="any" value="{{sub.amount}}" required/>
             <label class="form-label" for="type">Type</label>
-            <input class="form-control" id="type" name="type" type="text" value="{{sub.subtype}}"/>
+            <input class="form-control" id="type" name="type" type="text" value="{{sub.subtype}}" required/>
             <div class="col-6">
                 <label class="form-label" for="subdate">Start Date</label>
-                <input class="form-control" type="Date" name="subdate" id="subdate" value="{{sub.expdate}}"/>
+                <input class="form-control" type="Date" name="subdate" id="subdate" value="{{sub.expdate}}" required/>
                 <label class="form-label" for="expdate">End Date</label>
                 <input class="form-control" type="Date" name="expdate" id="expdate" />
             

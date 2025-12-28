@@ -127,15 +127,21 @@ def update(id):
        if subdays:
            subdays = int(subdays)
 
-       sub.name = name
-       sub.amount = amount
-       sub.subtype = subtype
-       sub.subdate = subdate
-       sub.expdate = expdate
-       sub.subdays = subdays
-       if not expdate:
+       if name:
+           sub.name = name
+       if amount:
+           sub.amount = amount
+       if subtype:
+           sub.subtype = subtype
+       if subdate:
+           sub.subdate = subdate
+       if expdate:
+           sub.expdate = expdate
+       if subdays:
+           sub.subdays = subdays
+       if not expdate and subdays:
             sub.setexpdate()
-       if not subdays:
+       if not subdays and expdate:
             sub.setdays()               
 
        db.session.commit()

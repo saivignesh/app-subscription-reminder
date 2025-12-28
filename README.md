@@ -1,6 +1,7 @@
+
 # Description 
 
-This is a small CRUD application that records multiple subscriptions and sends notification via email when the due date for any of the subscriptions is drawing near ( < 4 days).
+This is a small CRUD application that records multiple subscriptions  to keep track of the days left in the subscription and sends notification via email when the due date for any of the subscriptions is drawing near ( < 4 days).
 
 # Motivation
 
@@ -14,7 +15,7 @@ I wanted to practice implementing `celery` workers and scheduling periodic tasks
 	1. Flask-SQLAlchemy
 	2. Flask-mail
 2. Celery: Background Jobs
-3. Redis: Broker + Result backend
+3. Redis:  Broker + Result backend
 4. Jinja : Template engine
 5. SQLite: Database
 
@@ -125,14 +126,130 @@ With this we can start the celery worker and celery beat and the application sho
 
 At this point, I was also interested in seeing if it was possible to run the workers and the beat in the background on system startup instead of typing the celery worker and celery beat commands every time. 
 
-Fortunately, [Celery](https://docs.celeryq.dev/en/stable/userguide/daemonizing.html#daemonizing) documentation provides a detailed process to setup a `systemctl` service to run on system startup.
+Fortunately, [Celery](https://docs.celeryq.dev/en/stable/userguide/daemonizing.html#daemonizing) documentation provides a detailed process to setup a `system` service to run on system startup.
 
 The configuration for the worker and beat are stored in `/etc/default/celeryd` . 
 
-The actual service files for the worker and beat are stored in `/etc/systemd/system/celery.service` and `/etc/systemd/system/celerybeat.service` respectively.
+The actual service files for the worker and beat are stored in 
+
+`/etc/systemd/system/celery.service`
+
+and 
+
+`/etc/systemd/system/celerybeat.service`
+
+respectively.
+
+Note that to create and edit files in these directories we will require `sudo` privileges.
 
 All the files used to set up the daemonization are in [systemd](systemd) folder.
 
+One important thing to note is the `CELERY_BIN` must be set to where `celery` is installed and used by the application. If it is a virtual environment, then set it to the `bin` of that virtual environment.
+
+
+# Running the Application
+
+
+Clone this directory using 
+
+`git clone https://github.com/saivignesh/app-subscription-reminder.git`
+
+in a Linux terminal.
+
+You can  either set up a virtual environment in this directory using 
+
+```bash
+python3 -m venv .venv
+```
+
+and activate it using 
+
+```bash
+. .venv/bin/activate
+```
+
+and then install the python packages  using `requirements.txt`. 
+
+```bash
+pip install -r requirements.txt
+```
+
+or make sure the packages in `requirements.txt` are available in your global python installation.
+
+To start the Flask application simply type
+
+`flask run --debug` 
+
+in the project folder `app-subscription-reminder`. It will most likely serve the application on `http://127.0.0.1:5000`. The application should like this.
+
+![[Pasted image 20251228055914.png]]
+
+To add a subscription, click on Add App. You will get a form to fill the details of the subscription.
+
+![[Pasted image 20251228060943.png]]
+
+Click on submit after entering the details. The first four items are required. At least one of the last two must be given.
+
+We can update the details of an existing subscription using the update button.
+
+![[Pasted image 20251228061048.png]]
+
+To update details after renewal click the renew button.
+
+![[Pasted image 20251228061142.png]]
+
+Renew and update are not that different in functionality except that renewal requires the fields to be non empty where as if the fields in update are empty it would be taken as no change in those fields.
+
+To start the celery worker and beat services  type the following commands.
+
+```bash
+sudo systemctl daemon-reload
+```
+
+The above command has to be run after any changes to service definitions.
+
+```bash
+sudo systemctl enable celery
+sudo systemctl enable celerybeat
+```
+
+This will enable the services to start at boot.
+
+```bash
+sudo systemctl start celery
+sudo systemctl start celerybeat
+```
+
+If the setup has been correct, there should be no errors. We can check the status of the services.
+
+```bash
+systemctl status celery
+systemctl status celerybeat
+```
+
+We can also check the worker and beat logs.
+
+```bash
+vignesh@VIGNESH:~$ cat /var/log/celery/emailer.log
+[2025-12-28 03:39:10,262: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-12-28 03:39:10,270: INFO/MainProcess] mingle: searching for neighbors
+[2025-12-28 03:39:11,291: INFO/MainProcess] mingle: all alone
+[2025-12-28 03:39:11,315: INFO/MainProcess] emailer@VIGNESH ready.
+[2025-12-28 03:50:22,750: INFO/MainProcess] Task tasks.send_notification[bf8c186c-8297-4cb2-aaa3-c8d1b78f3045] received
+```
+
+```bash
+vignesh@VIGNESH:~$ cat /var/log/celery/beat.log
+[2025-12-28 03:50:22,700: INFO/MainProcess] beat: Starting...
+[2025-12-28 03:50:22,729: INFO/MainProcess] Scheduler: Sending due task tasks.send_notification() (tasks.send_notification)
+[2025-12-28 04:19:08,316: INFO/MainProcess] beat: Starting...
+```
+
+As we can see that the scheduled task has been run once.  We can check the corresponding `redis` database to confirm the result.
+
+The email received should look this 
+
+![[Pasted image 20251228063631.png]]
 
 
 
