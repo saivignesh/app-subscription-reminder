@@ -174,7 +174,7 @@ and then install the python packages  using `requirements.txt`.
 pip install -r requirements.txt
 ```
 
-or make sure the packages in `requirements.txt` are available in your global python installation.
+or make sure the packages in [requirements.txt](requirements.txt) are available in your global python installation.
 
 To start the Flask application simply type
 
@@ -182,7 +182,7 @@ To start the Flask application simply type
 
 in the project folder `app-subscription-reminder`. It will most likely serve the application on `http://127.0.0.1:5000`. The application should like this.
 
-![[Pasted image 20251228055914.png]]
+![](Attachments/Pasted image 20251228055914.png)
 
 To add a subscription, click on Add App. You will get a form to fill the details of the subscription.
 
