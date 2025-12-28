@@ -182,21 +182,25 @@ To start the Flask application simply type
 
 in the project folder `app-subscription-reminder`. It will most likely serve the application on `http://127.0.0.1:5000`. The application should like this.
 
-![](Pasted image 20251228055914.png)
+<img width="1920" height="1080" alt="Pasted image 20251228055914" src="https://github.com/user-attachments/assets/fdcb0dc1-d599-4163-900e-5930bac2f293" />
+
 
 To add a subscription, click on Add App. You will get a form to fill the details of the subscription.
 
-![[Pasted image 20251228060943.png]]
+<img width="1338" height="588" alt="Pasted image 20251228060943" src="https://github.com/user-attachments/assets/1c7e2e6a-0028-47d2-b49b-7c927aac497a" />
+
 
 Click on submit after entering the details. The first four items are required. At least one of the last two must be given.
 
 We can update the details of an existing subscription using the update button.
 
-![[Pasted image 20251228061048.png]]
+<img width="837" height="643" alt="Pasted image 20251228061048" src="https://github.com/user-attachments/assets/e8797742-843a-4d2e-87ee-24bd30143b57" />
+
 
 To update details after renewal click the renew button.
 
-![[Pasted image 20251228061142.png]]
+
+<img width="808" height="566" alt="Pasted image 20251228061142" src="https://github.com/user-attachments/assets/1655f3ca-fd16-4046-8bbd-473bbefd261e" />
 
 Renew and update are not that different in functionality except that renewal requires the fields to be non empty where as if the fields in update are empty it would be taken as no change in those fields.
 
@@ -249,7 +253,8 @@ As we can see that the scheduled task has been run once.  We can check the corre
 
 The email received should look this 
 
-![[Pasted image 20251228063631.png]]
+<img width="402" height="498" alt="Pasted image 20251228063631" src="https://github.com/user-attachments/assets/3e1f2ea6-122b-4430-a731-40c5419a71e3" />
+
 
 
 
