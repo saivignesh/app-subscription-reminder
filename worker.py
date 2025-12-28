@@ -16,8 +16,7 @@ def make_celery(app):
         result_expires=3600       
     )
 
-    celery_app.set_default()
-    #app.conf.update(result_expires=3600)
+    celery_app.set_default()    
     app.extensions["celery"] = celery_app
     celery_app.conf.timezone = "Asia/Kolkata"
     
