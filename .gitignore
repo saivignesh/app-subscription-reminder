@@ -4,3 +4,4 @@ push.sh
 celery_logs.info
 celerybeat-schedule
 instance/
+sublime*

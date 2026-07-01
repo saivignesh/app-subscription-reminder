@@ -12,7 +12,7 @@ from celery.schedules import crontab
 @celery_app.on_after_finalize.connect
 def setup_periodic_task(sender,**kwargs):
     sender.add_periodic_task(
-        crontab(hour=3,minute=0),
+        crontab(hour=11,minute=0),
         send_notification.s(),
     )
 
