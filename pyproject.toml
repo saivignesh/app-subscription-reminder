@@ -1,0 +1,21 @@
+[project]
+name = "app-subscription-reminder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "saivignesh", email = "sai.s.vignesh@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "celery==5.6.0",
+    "dotenv==0.9.9",
+    "flask==3.1.2",
+    "flask-mail==0.10.0",
+    "flask-sqlalchemy==3.1.1",
+    "python-dotenv==1.2.1",
+    "redis==6.4.0",
+]
+
+[tool.uv]
+package=false
